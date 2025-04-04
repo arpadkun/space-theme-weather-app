@@ -1,0 +1,49 @@
+---
+format_version: '11'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: node
+trigger_map:
+- push_branch: main
+  workflow: primary
+- pull_request_target_branch: "*"
+  workflow: primary
+- tag: "*"
+  workflow: deploy
+workflows:
+  primary:
+    steps:
+    - activate-ssh-key@4:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone@6: {}
+    - npm@1:
+        inputs:
+        - command: install
+    - npm@1:
+        inputs:
+        - command: run lint
+    - npm@1:
+        inputs:
+        - command: test
+    - deploy-to-bitrise-io@2: {}
+  deploy:
+    steps:
+    - activate-ssh-key@4:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone@6: {}
+    - npm@1:
+        inputs:
+        - command: install
+    - npm@1:
+        inputs:
+        - command: test
+    - script@1:
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            set -ex
+            echo "Preparing for deployment..."
+            # Add your deployment script here
+    - deploy-to-bitrise-io@2: {}
+app:
+  envs:
+  - WEATHER_API_KEY: "$WEATHER_API_KEY"

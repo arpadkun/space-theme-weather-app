@@ -1,0 +1,571 @@
+/* Cosmic Weather App - Main Stylesheet */
+
+/* ---------- Variables ---------- */
+:root {
+  /* Colors */
+  --color-bg-dark: #0a0d23;
+  --color-bg-light: #121a3e;
+  --color-accent: #8a2be2;
+  --color-accent-light: #b76eff;
+  --color-text: #e6e6ff;
+  --color-text-light: #ffffff;
+  --color-text-muted: #a9b2e0;
+  
+  /* Planets Colors */
+  --planet-hot: #ff6b6b;
+  --planet-warm: #ffa94d;
+  --planet-mild: #69db7c;
+  --planet-cool: #4dabf7;
+  --planet-cold: #c5f6fa;
+  
+  /* UI Elements */
+  --border-radius: 8px;
+  --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  --glow-effect: 0 0 12px var(--color-accent-light);
+  
+  /* Transitions */
+  --transition-speed: 0.3s;
+}
+
+/* ---------- Global Styles ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: var(--color-bg-dark);
+  color: var(--color-text);
+  min-height: 100vh;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Galaxy Background Effect */
+.galaxy-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(125deg, var(--color-bg-dark) 0%, var(--color-bg-light) 100%);
+  opacity: 1;
+  z-index: -2;
+  overflow: hidden;
+}
+
+/* Add starry background */
+.galaxy-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, var(--color-text) 50%, transparent),
+    radial-gradient(2px 2px at 40px 70px, var(--color-text) 50%, transparent),
+    radial-gradient(2px 2px at 60px 110px, var(--color-text) 50%, transparent),
+    radial-gradient(2px 2px at 80px 150px, var(--color-text) 50%, transparent),
+    radial-gradient(2px 2px at 100px 190px, var(--color-text) 50%, transparent),
+    radial-gradient(2px 2px at 120px 230px, var(--color-text) 50%, transparent),
+    radial-gradient(2px 2px at 140px 270px, var(--color-text) 50%, transparent),
+    radial-gradient(3px 3px at 200px 300px, var(--color-accent-light) 50%, transparent),
+    radial-gradient(1px 1px at 220px 320px, var(--color-text) 50%, transparent),
+    radial-gradient(1px 1px at 240px 340px, var(--color-text) 50%, transparent);
+  background-repeat: repeat;
+  background-size: 350px 350px;
+  z-index: -1;
+  opacity: 0.6;
+  animation: twinkling 8s infinite linear;
+}
+
+/* Twinkling animation for stars */
+@keyframes twinkling {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+  100% { opacity: 0.3; }
+}
+
+/* App Container */
+.app-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.accent {
+  color: var(--color-accent-light);
+}
+
+/* ---------- Header ---------- */
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px var(--color-accent);
+}
+
+.tagline {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+/* ---------- Search Form ---------- */
+.search-container {
+  margin-bottom: 2rem;
+}
+
+.input-group {
+  display: flex;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+#location-input {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--color-text-light);
+  font-size: 1rem;
+}
+
+#location-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.search-btn {
+  background: var(--color-accent);
+  border: none;
+  padding: 0 1.2rem;
+  color: var(--color-text-light);
+  cursor: pointer;
+  transition: background var(--transition-speed);
+}
+
+.search-btn:hover {
+  background: var(--color-accent-light);
+}
+
+/* ---------- Weather Display ---------- */
+#weather-container {
+  background: rgba(10, 13, 35, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--box-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: opacity var(--transition-speed), transform var(--transition-speed);
+}
+
+.location-info {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+#location-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+#location-date {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+/* Weather Display */
+.weather-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.cosmic-object-container {
+  flex: 0 0 45%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cosmic-object {
+  width: 120px;
+  height: 120px;
+  position: relative;
+  border-radius: 50%;
+  background: var(--planet-mild);
+  box-shadow: 0 0 30px rgba(105, 219, 124, 0.5);
+  position: relative;
+  overflow: hidden;
+  animation: pulse 6s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Temperature Display */
+.temperature-display {
+  flex: 0 0 55%;
+  text-align: center;
+}
+
+#temperature {
+  font-size: 4rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.units-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.units-toggle button {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 0.5rem;
+  transition: color var(--transition-speed);
+}
+
+.units-toggle button:hover,
+.units-toggle button.active {
+  color: var(--color-text-light);
+}
+
+.units-toggle span {
+  color: var(--color-text-muted);
+}
+
+#weather-description {
+  margin-bottom: 0.5rem;
+  text-transform: capitalize;
+}
+
+#feels-like {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+/* Weather Details */
+.weather-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.detail-item {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.detail-item i {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-accent-light);
+}
+
+.detail-item span {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.detail-item p {
+  font-weight: 500;
+}
+
+/* ---------- Loading Indicator ---------- */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.orbit-spinner {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin-bottom: 1.5rem;
+}
+
+.orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 2px solid transparent;
+  border-radius: 50%;
+}
+
+.orbit:nth-child(1) {
+  width: 120px;
+  height: 120px;
+  margin-top: -60px;
+  margin-left: -60px;
+  border-top-color: var(--color-accent-light);
+  animation: spin 2s linear infinite;
+}
+
+.orbit:nth-child(2) {
+  width: 90px;
+  height: 90px;
+  margin-top: -45px;
+  margin-left: -45px;
+  border-right-color: var(--color-text-muted);
+  animation: spin 1.5s linear infinite;
+}
+
+.orbit:nth-child(3) {
+  width: 60px;
+  height: 60px;
+  margin-top: -30px;
+  margin-left: -30px;
+  border-bottom-color: var(--color-accent);
+  animation: spin 1s linear infinite;
+}
+
+.planet {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin-top: -10px;
+  margin-left: -10px;
+  background: var(--color-accent-light);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--color-accent-light);
+  animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loading p {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+}
+
+/* ---------- Error Message ---------- */
+.error-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.error-message i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--color-accent);
+}
+
+#error-text {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+/* ---------- Footer ---------- */
+footer {
+  margin-top: auto;
+  padding-top: 2rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+footer p {
+  margin-bottom: 0.25rem;
+}
+
+footer a {
+  color: var(--color-accent-light);
+  text-decoration: none;
+  transition: color var(--transition-speed);
+}
+
+footer a:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+footer i {
+  color: var(--color-accent);
+}
+
+/* ---------- Custom Planet Styles (added by JS) ---------- */
+.planet-hot {
+  background: radial-gradient(circle at 30% 30%, var(--planet-hot) 0%, #ff3333 80%);
+  box-shadow: 0 0 30px rgba(255, 107, 107, 0.7);
+}
+
+.planet-hot::before {
+  content: '';
+  position: absolute;
+  width: 140%;
+  height: 140%;
+  top: -20%;
+  left: -20%;
+  background: radial-gradient(circle at center, rgba(255, 107, 107, 0.2) 0%, transparent 70%);
+  animation: solarFlare 4s infinite ease-in-out;
+}
+
+@keyframes solarFlare {
+  0%, 100% { opacity: 0.5; transform: scale(0.8); }
+  50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+.planet-warm {
+  background: radial-gradient(circle at 30% 30%, var(--planet-warm) 0%, #ff8000 80%);
+  box-shadow: 0 0 30px rgba(255, 169, 77, 0.7);
+}
+
+.planet-mild {
+  background: radial-gradient(circle at 30% 30%, var(--planet-mild) 0%, #4caf50 80%);
+  box-shadow: 0 0 30px rgba(105, 219, 124, 0.7);
+}
+
+.planet-cool {
+  background: radial-gradient(circle at 30% 30%, var(--planet-cool) 0%, #2196f3 80%);
+  box-shadow: 0 0 30px rgba(77, 171, 247, 0.7);
+}
+
+.planet-cool::after {
+  content: '';
+  position: absolute;
+  width: 110%;
+  height: 20px;
+  top: 30%;
+  left: -5%;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: rotate(-15deg);
+}
+
+.planet-cold {
+  background: radial-gradient(circle at 30% 30%, var(--planet-cold) 0%, #a5f1fa 80%);
+  box-shadow: 0 0 30px rgba(197, 246, 250, 0.7);
+}
+
+.planet-cold::after {
+  content: '';
+  position: absolute;
+  width: 110%;
+  height: 110%;
+  top: -5%;
+  left: -5%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+}
+
+/* Rain animation */
+.weather-rain::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent 0%, rgba(77, 171, 247, 0.4) 100%);
+  animation: rain 2s infinite linear;
+}
+
+@keyframes rain {
+  from { background-position: 0 0; }
+  to { background-position: 0 20px; }
+}
+
+/* Snow animation */
+.weather-snow::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.8) 50%, transparent),
+    radial-gradient(2px 2px at 40px 40px, rgba(255, 255, 255, 0.8) 50%, transparent),
+    radial-gradient(2px 2px at 60px 60px, rgba(255, 255, 255, 0.8) 50%, transparent);
+  background-size: 100px 100px;
+  animation: snow 3s infinite linear;
+}
+
+@keyframes snow {
+  from { background-position: 0 0; }
+  to { background-position: 100px 100px; }
+}
+
+/* ---------- Responsive Design ---------- */
+@media (max-width: 480px) {
+  .app-container {
+    padding: 1rem;
+  }
+  
+  header h1 {
+    font-size: 1.75rem;
+  }
+  
+  .weather-display {
+    flex-direction: column;
+  }
+  
+  .cosmic-object-container,
+  .temperature-display {
+    flex: 0 0 100%;
+  }
+  
+  .cosmic-object-container {
+    margin-bottom: 1.5rem;
+  }
+  
+  #temperature {
+    font-size: 3.5rem;
+  }
+}
+
+@media (max-width: 350px) {
+  .weather-details {
+    grid-template-columns: 1fr;
+  }
+}

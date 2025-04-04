@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cosmic Weather App - Check the weather with a space theme">
+  <title>Cosmic Weather App 🌌☄️</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Galaxy Background -->
+    <div class="galaxy-background"></div>
+    
+    <!-- Header -->
+    <header>
+      <h1>Cosmic Weather <span class="accent">Explorer</span></h1>
+      <p class="tagline">Weather data from across the universe</p>
+    </header>
+
+    <!-- Search Form -->
+    <form id="search-form" class="search-container">
+      <div class="input-group">
+        <input 
+          type="text" 
+          id="location-input" 
+          placeholder="Enter city name..." 
+          autocomplete="off"
+          required
+        >
+        <button type="submit" class="search-btn">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </form>
+
+    <!-- Weather Display -->
+    <main id="weather-container" class="hidden">
+      <!-- Location Info -->
+      <div class="location-info">
+        <h2 id="location-name">City Name</h2>
+        <p id="location-date">Loading date...</p>
+      </div>
+
+      <!-- Primary Weather Display -->
+      <div class="weather-display">
+        <div class="cosmic-object-container">
+          <div id="cosmic-object" class="cosmic-object">
+            <!-- Planet or cosmic object will be inserted here by JS -->
+          </div>
+        </div>
+        
+        <div class="temperature-display">
+          <h2 id="temperature">--°</h2>
+          <div class="units-toggle">
+            <button id="celsius-btn" class="active">°C</button>
+            <span>|</span>
+            <button id="fahrenheit-btn">°F</button>
+          </div>
+          <p id="weather-description">Weather description</p>
+          <p id="feels-like">Feels like: --°</p>
+        </div>
+      </div>
+
+      <!-- Weather Details -->
+      <div class="weather-details">
+        <div class="detail-item">
+          <i class="fas fa-wind"></i>
+          <span>Wind</span>
+          <p id="wind-speed">-- km/h</p>
+        </div>
+        <div class="detail-item">
+          <i class="fas fa-tint"></i>
+          <span>Humidity</span>
+          <p id="humidity">--%</p>
+        </div>
+        <div class="detail-item">
+          <i class="fas fa-compress-alt"></i>
+          <span>Pressure</span>
+          <p id="pressure">-- hPa</p>
+        </div>
+        <div class="detail-item">
+          <i class="fas fa-eye"></i>
+          <span>Visibility</span>
+          <p id="visibility">-- km</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Loading Indicator -->
+    <div id="loading" class="loading hidden">
+      <div class="orbit-spinner">
+        <div class="orbit"></div>
+        <div class="orbit"></div>
+        <div class="orbit"></div>
+        <div class="planet"></div>
+      </div>
+      <p>Scanning the cosmos...</p>
+    </div>
+
+    <!-- Error Message -->
+    <div id="error-message" class="error-message hidden">
+      <i class="fas fa-satellite"></i>
+      <p>Houston, we have a problem!</p>
+      <p id="error-text">Location not found. Please try again.</p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>Powered by <a href="https://openweathermap.org/" target="_blank" rel="noopener">OpenWeather</a></p>
+      <p>Made with <i class="fas fa-meteor"></i> cosmic energy</p>
+    </footer>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="js/theme-mapper.js"></script>
+  <script src="js/preferences.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
