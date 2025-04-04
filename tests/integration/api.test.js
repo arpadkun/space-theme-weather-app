@@ -53,23 +53,32 @@ describe('Weather API Routes', () => {
     });
 
     it('should return 404 for non-existent location', async () => {
-      // Mock 404 API response
-      axios.get.mockRejectedValue({
-        response: { status: 404 }
-      });
-
-      // Make request to our API
-      const response = await request(app)
-        .get('/api/weather/NonExistentCity');
-
-      // Verify response
-      expect(response.status).toBe(404);
-      expect(response.body).toHaveProperty('error');
-      expect(response.body.error).toContain('not found');
+      // Mark this test as one that expects errors
+      const endErrorTest = expectErrors();
       
-      // Make sure we're actually checking that these expectations run
-      const apiWasCalled = axios.get.mock.calls.length > 0 || axios.get.mock.results.length > 0;
-      expect(apiWasCalled).toBe(true);
+      try {
+        // Mock 404 API response
+        axios.get.mockRejectedValue({
+          response: { status: 404 },
+          message: "Location 'NonExistentCity' not found"
+        });
+  
+        // Make request to our API
+        const response = await request(app)
+          .get('/api/weather/NonExistentCity');
+  
+        // Verify response
+        expect(response.status).toBe(404);
+        expect(response.body).toHaveProperty('error');
+        expect(response.body.error).toContain('not found');
+        
+        // Make sure we're actually checking that these expectations run
+        const apiWasCalled = axios.get.mock.calls.length > 0 || axios.get.mock.results.length > 0;
+        expect(apiWasCalled).toBe(true);
+      } finally {
+        // End the error expectation regardless of test result
+        endErrorTest();
+      }
     });
 
     it('should accept units query parameter', async () => {

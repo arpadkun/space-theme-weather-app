@@ -87,32 +87,54 @@ describe('Weather Controller', () => {
     });
 
     it('should return 404 error if location is not found', async () => {
-      // Mock location not found error
-      weatherService.getCurrentWeather.mockRejectedValue(new Error("Location 'NonExistentCity' not found"));
-      req.params.location = 'NonExistentCity';
-
-      // Call the controller
-      await weatherController.getCurrentWeather(req, res);
-
-      // Verify 404 status
-      expect(res.status).toHaveBeenCalledWith(404);
+      // Mark this test as one that expects errors
+      const endErrorTest = expectErrors();
       
-      // Verify error message
-      expect(res.json).toHaveBeenCalledWith({ error: "Location 'NonExistentCity' not found" });
+      try {
+        // Mock location not found error
+        weatherService.getCurrentWeather.mockRejectedValue(new Error("Location 'NonExistentCity' not found"));
+        req.params.location = 'NonExistentCity';
+  
+        // Call the controller
+        await weatherController.getCurrentWeather(req, res);
+  
+        // Verify 404 status
+        expect(res.status).toHaveBeenCalledWith(404);
+        
+        // Verify error message
+        expect(res.json).toHaveBeenCalledWith({ error: "Location 'NonExistentCity' not found" });
+        
+        // Verify service was called
+        expect(weatherService.getCurrentWeather).toHaveBeenCalled();
+      } finally {
+        // End the error expectation regardless of test result
+        endErrorTest();
+      }
     });
 
     it('should return 500 error for general service failures', async () => {
-      // Mock general service error
-      weatherService.getCurrentWeather.mockRejectedValue(new Error('Service failure'));
-
-      // Call the controller
-      await weatherController.getCurrentWeather(req, res);
-
-      // Verify 500 status
-      expect(res.status).toHaveBeenCalledWith(500);
+      // Mark this test as one that expects errors
+      const endErrorTest = expectErrors();
       
-      // Verify error message
-      expect(res.json).toHaveBeenCalledWith({ error: 'Failed to retrieve weather data' });
+      try {
+        // Mock general service error
+        weatherService.getCurrentWeather.mockRejectedValue(new Error('Service failure'));
+  
+        // Call the controller
+        await weatherController.getCurrentWeather(req, res);
+  
+        // Verify 500 status
+        expect(res.status).toHaveBeenCalledWith(500);
+        
+        // Verify error message
+        expect(res.json).toHaveBeenCalledWith({ error: 'Failed to retrieve weather data' });
+        
+        // Verify service was called
+        expect(weatherService.getCurrentWeather).toHaveBeenCalled();
+      } finally {
+        // End the error expectation regardless of test result
+        endErrorTest();
+      }
     });
   });
 });

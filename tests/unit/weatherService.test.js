@@ -124,31 +124,47 @@ describe('Weather Service', () => {
     });
 
     it('should throw a location not found error for 404 response', async () => {
-      // Mock cache miss
-      cache.get.mockReturnValue(null);
-
-      // Mock 404 API response
-      axios.get.mockRejectedValue({
-        response: { status: 404 }
-      });
-
-      // Expect error to be thrown
-      await expect(weatherService.getCurrentWeather('NonExistentCity')).rejects.toThrow(
-        "Location 'NonExistentCity' not found"
-      );
+      // Mark this test as one that expects errors
+      const endErrorTest = expectErrors();
+      
+      try {
+        // Mock cache miss
+        cache.get.mockReturnValue(null);
+  
+        // Mock 404 API response
+        axios.get.mockRejectedValue({
+          response: { status: 404 }
+        });
+  
+        // Expect error to be thrown
+        await expect(weatherService.getCurrentWeather('NonExistentCity')).rejects.toThrow(
+          "Location 'NonExistentCity' not found"
+        );
+      } finally {
+        // End the error expectation regardless of test result
+        endErrorTest();
+      }
     });
 
     it('should throw a general error for other API failures', async () => {
-      // Mock cache miss
-      cache.get.mockReturnValue(null);
-
-      // Mock general API failure
-      axios.get.mockRejectedValue(new Error('Network error'));
-
-      // Expect error to be thrown
-      await expect(weatherService.getCurrentWeather('London')).rejects.toThrow(
-        "Failed to fetch weather data: Network error"
-      );
+      // Mark this test as one that expects errors
+      const endErrorTest = expectErrors();
+      
+      try {
+        // Mock cache miss
+        cache.get.mockReturnValue(null);
+  
+        // Mock general API failure
+        axios.get.mockRejectedValue(new Error('Network error'));
+  
+        // Expect error to be thrown
+        await expect(weatherService.getCurrentWeather('London')).rejects.toThrow(
+          "Failed to fetch weather data: Network error"
+        );
+      } finally {
+        // End the error expectation regardless of test result
+        endErrorTest();
+      }
     });
   });
 });
