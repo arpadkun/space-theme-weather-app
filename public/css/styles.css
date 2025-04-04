@@ -89,6 +89,47 @@ body {
   100% { opacity: 0.3; }
 }
 
+/* Background Planets */
+.bg-planet {
+  position: fixed;
+  border-radius: 50%;
+  z-index: -1;
+  opacity: 0.6;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.bg-planet-1 {
+  width: 80px;
+  height: 80px;
+  bottom: 15%;
+  left: 10%;
+  background: radial-gradient(circle at 30% 30%, var(--planet-cool) 0%, #1a7fcf 80%);
+  animation: float 15s infinite ease-in-out;
+}
+
+.bg-planet-2 {
+  width: 120px;
+  height: 120px;
+  top: 20%;
+  right: 15%;
+  background: radial-gradient(circle at 30% 30%, var(--planet-warm) 0%, #e67700 80%);
+  animation: float 20s infinite ease-in-out reverse;
+}
+
+.bg-planet-3 {
+  width: 60px;
+  height: 60px;
+  top: 70%;
+  right: 20%;
+  background: radial-gradient(circle at 30% 30%, var(--planet-cold) 0%, #a5f1fa 80%);
+  animation: float 12s infinite ease-in-out;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(5deg); }
+}
+
 /* App Container */
 .app-container {
   max-width: 500px;
