@@ -1,12 +1,10 @@
 const axios = require('axios');
 const weatherService = require('../../src/services/weatherService');
 const cache = require('../../src/utils/cache');
-const mockWeatherData = require('../../src/services/mockWeatherData');
 
 // Mock dependencies
 jest.mock('axios');
 jest.mock('../../src/utils/cache');
-jest.mock('../../src/services/mockWeatherData');
 
 describe('Weather Service', () => {
   // Clear all mocks before each test
@@ -76,10 +74,6 @@ describe('Weather Service', () => {
       // Mock successful API call
       axios.get.mockResolvedValue(mockApiResponse);
       
-      // Verify demo mode is not used in tests
-      expect(process.env.NODE_ENV).toBe('test');
-      expect(process.env.DEMO_MODE).toBe('false');
-
       // Call the service
       const result = await weatherService.getCurrentWeather('London', 'metric');
 
@@ -93,9 +87,6 @@ describe('Weather Service', () => {
           })
         })
       );
-
-      // Verify mock data was not used
-      expect(mockWeatherData.getMockWeatherData).not.toHaveBeenCalled();
 
       // Verify result was formatted correctly
       expect(result).toEqual(expectedResult);

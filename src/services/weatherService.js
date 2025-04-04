@@ -1,7 +1,6 @@
 const axios = require('axios');
 const config = require('../config/config');
 const cache = require('../utils/cache');
-const { getMockWeatherData } = require('./mockWeatherData');
 
 /**
  * Service for interacting with the weather API
@@ -25,47 +24,35 @@ class WeatherService {
     }
     
     try {
-      let weatherData;
+      // Log API request params for debugging
+      console.log('Weather API request:', {
+        url: `${config.weatherApi.baseUrl}/weather`,
+        params: {
+          q: location,
+          units: units,
+          appid: config.weatherApi.key ? '***' : 'undefined' // Log whether API key exists without exposing it
+        },
+        apiKeyLength: config.weatherApi.key ? config.weatherApi.key.length : 0
+      });
       
-      // Check if we should use mock data (if DEMO_MODE is enabled or API key is invalid)
-      // Skip in test environment to ensure tests validate API behavior
-      if (!process.env.NODE_ENV?.includes('test') && 
-          (process.env.DEMO_MODE === 'true' || config.weatherApi.key.includes('1234567890'))) {
-        console.log('Using mock weather data for demonstration');
-        // Get mock data
-        const mockResponse = getMockWeatherData(location, units);
-        weatherData = this._formatWeatherData(mockResponse);
-      } else {
-        // Log API request params for debugging
-        console.log('Weather API request:', {
-          url: `${config.weatherApi.baseUrl}/weather`,
-          params: {
-            q: location,
-            units: units,
-            appid: config.weatherApi.key ? '***' : 'undefined' // Log whether API key exists without exposing it
-          },
-          apiKeyLength: config.weatherApi.key ? config.weatherApi.key.length : 0
-        });
-        
-        // Fetch data from API
-        const response = await axios.get(`${config.weatherApi.baseUrl}/weather`, {
-          params: {
-            q: location,
-            units: units,
-            appid: config.weatherApi.key
-          }
-        });
-        
-        // Log successful response
-        console.log('Weather API response received:', {
-          status: response.status,
-          statusText: response.statusText,
-          dataKeys: Object.keys(response.data || {})
-        });
-        
-        // Format the response data
-        weatherData = this._formatWeatherData(response.data);
-      }
+      // Fetch data from API
+      const response = await axios.get(`${config.weatherApi.baseUrl}/weather`, {
+        params: {
+          q: location,
+          units: units,
+          appid: config.weatherApi.key
+        }
+      });
+      
+      // Log successful response
+      console.log('Weather API response received:', {
+        status: response.status,
+        statusText: response.statusText,
+        dataKeys: Object.keys(response.data || {})
+      });
+      
+      // Format the response data
+      const weatherData = this._formatWeatherData(response.data);
       
       // Store in cache
       cache.set(cacheKey, weatherData);
@@ -88,36 +75,11 @@ class WeatherService {
         } : 'undefined'
       });
       
-      // In test environment, we want to propagate the error to validate error handling
-      if (process.env.NODE_ENV?.includes('test')) {
-        // Handle error and provide meaningful message for tests
-        if (error.response && error.response.status === 404) {
-          throw new Error(`Location '${location}' not found`);
-        }
-        throw new Error(`Failed to fetch weather data: ${error.message}`);
+      // Handle error and provide meaningful message
+      if (error.response && error.response.status === 404) {
+        throw new Error(`Location '${location}' not found`);
       }
-
-      // In non-test environments, fall back to mock data
-      console.log('Falling back to mock data due to API error');
-      
-      try {
-        // Get mock data as fallback
-        const mockResponse = getMockWeatherData(location, units);
-        const weatherData = this._formatWeatherData(mockResponse);
-        
-        // Store in cache
-        cache.set(cacheKey, weatherData);
-        
-        return weatherData;
-      } catch (mockError) {
-        console.error('Error with mock data:', mockError);
-        
-        // Handle error and provide meaningful message
-        if (error.response && error.response.status === 404) {
-          throw new Error(`Location '${location}' not found`);
-        }
-        throw new Error(`Failed to fetch weather data: ${error.message}`);
-      }
+      throw new Error(`Failed to fetch weather data: ${error.message}`);
     }
   }
   

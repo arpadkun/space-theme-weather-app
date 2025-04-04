@@ -11,7 +11,7 @@ module.exports = {
   // Weather API configuration
   weatherApi: {
     baseUrl: 'https://api.openweathermap.org/data/2.5',
-    key: process.env.WEATHER_API_KEY || 'df338287b3b1683a791ef516b898ce20', // Use the .env key or fallback to a default
+    key: process.env.WEATHER_API_KEY || '', // Use the .env key or no key
     units: 'metric' // Default units (can be 'metric' or 'imperial')
   },
   
