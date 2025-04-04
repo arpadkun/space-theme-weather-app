@@ -46,6 +46,10 @@ describe('Weather API Routes', () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('location.name', 'London');
       expect(response.body).toHaveProperty('weather.condition', 'Clear');
+      
+      // Make sure we're actually checking that these expectations run
+      const apiWasCalled = axios.get.mock.calls.length > 0;
+      expect(apiWasCalled).toBe(true);
     });
 
     it('should return 404 for non-existent location', async () => {
@@ -62,6 +66,10 @@ describe('Weather API Routes', () => {
       expect(response.status).toBe(404);
       expect(response.body).toHaveProperty('error');
       expect(response.body.error).toContain('not found');
+      
+      // Make sure we're actually checking that these expectations run
+      const apiWasCalled = axios.get.mock.calls.length > 0 || axios.get.mock.results.length > 0;
+      expect(apiWasCalled).toBe(true);
     });
 
     it('should accept units query parameter', async () => {
@@ -82,6 +90,10 @@ describe('Weather API Routes', () => {
           })
         })
       );
+      
+      // Make sure API was actually called
+      const apiWasCalled = axios.get.mock.calls.length > 0;
+      expect(apiWasCalled).toBe(true);
     });
   });
 });

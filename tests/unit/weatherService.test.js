@@ -90,6 +90,10 @@ describe('Weather Service', () => {
 
       // Verify result was formatted correctly
       expect(result).toEqual(expectedResult);
+      
+      // Make sure axios was actually called
+      const apiWasCalled = axios.get.mock.calls.length > 0;
+      expect(apiWasCalled).toBe(true);
 
       // Verify result was cached
       expect(cache.set).toHaveBeenCalledWith(
@@ -110,6 +114,10 @@ describe('Weather Service', () => {
 
       // Verify cache was checked
       expect(cache.get).toHaveBeenCalledWith('weather:London:metric');
+      
+      // Make sure cache method was actually called
+      const cacheWasCalled = cache.get.mock.calls.length > 0;
+      expect(cacheWasCalled).toBe(true);
 
       // Verify result matches expected data
       expect(result).toEqual(expectedResult);

@@ -3,7 +3,6 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.js',
     '!src/config/**',
-    '!src/services/mockWeatherData.js', // Exclude mock data from coverage
     '!**/node_modules/**'
   ],
   // Set NODE_ENV to test for all tests
@@ -19,5 +18,7 @@ module.exports = {
   testMatch: [
     '**/tests/**/*.test.js'
   ],
-  verbose: true
+  verbose: true,
+  bail: true,
+  testFailureExitCode: 1
 };

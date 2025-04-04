@@ -24,7 +24,12 @@ workflows:
     - npm@1:
         inputs:
         - command: test
-    - deploy-to-bitrise-io@2: {}
+        is_always_run: false
+        is_skippable: false
+    - deploy-to-bitrise-io@2:
+        run_if: $BITRISE_BUILD_STATUS == "0"
+        inputs:
+          notify_user_groups: none
   deploy:
     steps:
     - activate-ssh-key@4:
@@ -36,6 +41,8 @@ workflows:
     - npm@1:
         inputs:
         - command: test
+        is_always_run: false
+        is_skippable: false
     - script@1:
         inputs:
         - content: |-
@@ -43,7 +50,10 @@ workflows:
             set -ex
             echo "Preparing for deployment..."
             # Add your deployment script here
-    - deploy-to-bitrise-io@2: {}
+    - deploy-to-bitrise-io@2:
+        run_if: $BITRISE_BUILD_STATUS == "0"
+        inputs:
+          notify_user_groups: none
 app:
   envs:
   - WEATHER_API_KEY: "$WEATHER_API_KEY"
