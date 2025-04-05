@@ -46,11 +46,6 @@ A space-themed weather application that displays current weather information wit
    WEATHER_API_KEY=your_api_key_here
    ```
 
-   Note: If you don't have an API key, you can enable demo mode to use mock data:
-   ```
-   DEMO_MODE=true
-   ```
-
 ## Usage
 
 ### Development
