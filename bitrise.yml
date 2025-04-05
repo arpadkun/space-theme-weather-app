@@ -22,8 +22,15 @@ workflows:
         inputs:
         - command: run lint
     - npm@1:
+        title: Run Unit Tests
         inputs:
-        - command: test
+        - command: run test:unit
+        is_always_run: false
+        is_skippable: false
+    - npm@1:
+        title: Run Integration Tests
+        inputs:
+        - command: run test:integration
         is_always_run: false
         is_skippable: false
     - deploy-to-bitrise-io@2:
@@ -39,8 +46,9 @@ workflows:
         inputs:
         - command: install
     - npm@1:
+        title: Run Unit Tests
         inputs:
-        - command: test
+        - command: test -- --testPathPattern="unit"
         is_always_run: false
         is_skippable: false
     - script@1:

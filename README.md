@@ -73,10 +73,28 @@ npm start
 
 ### Testing
 
-Run tests:
+Run all tests:
 
 ```bash
 npm test
+```
+
+Run only unit tests:
+
+```bash
+npm run test:unit
+```
+
+Run only integration tests:
+
+```bash
+npm run test:integration
+```
+
+Run tests in watch mode:
+
+```bash
+npm run test:watch
 ```
 
 Run tests with coverage report:
@@ -164,8 +182,13 @@ workflows:
         inputs:
         - command: run lint
     - npm@1:
+        title: Run Unit Tests
         inputs:
-        - command: test
+        - command: run test:unit
+    - npm@1:
+        title: Run Integration Tests
+        inputs:
+        - command: run test:integration
   deploy:
     steps:
     - activate-ssh-key@4:
@@ -175,8 +198,13 @@ workflows:
         inputs:
         - command: install
     - npm@1:
+        title: Run Unit Tests
         inputs:
-        - command: test
+        - command: run test:unit
+    - npm@1:
+        title: Run Integration Tests
+        inputs:
+        - command: run test:integration
     # Add your deployment steps here
 ```
 
