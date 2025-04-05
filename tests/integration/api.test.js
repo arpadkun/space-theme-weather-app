@@ -1,9 +1,23 @@
 const request = require('supertest');
 const app = require('../../server');
 const axios = require('axios');
+const config = require('../../src/config/config');
 
 // Mock external API calls
 jest.mock('axios');
+jest.mock('../../src/config/config', () => {
+  return {
+    weatherApi: {
+      baseUrl: 'https://api.openweathermap.org/data/2.5',
+      key: 'test-api-key-for-integration-tests',
+      units: 'metric'
+    },
+    cache: {
+      ttl: 300,
+      checkperiod: 60
+    }
+  };
+});
 
 describe('Weather API Routes', () => {
   // Sample weather API response

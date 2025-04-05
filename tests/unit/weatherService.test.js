@@ -1,10 +1,24 @@
 const axios = require('axios');
 const weatherService = require('../../src/services/weatherService');
 const cache = require('../../src/utils/cache');
+const config = require('../../src/config/config');
 
 // Mock dependencies
 jest.mock('axios');
 jest.mock('../../src/utils/cache');
+jest.mock('../../src/config/config', () => {
+  return {
+    weatherApi: {
+      baseUrl: 'https://api.openweathermap.org/data/2.5',
+      key: 'test-api-key-for-tests',
+      units: 'metric'
+    },
+    cache: {
+      ttl: 300,
+      checkperiod: 60
+    }
+  };
+});
 
 describe('Weather Service', () => {
   // Clear all mocks before each test

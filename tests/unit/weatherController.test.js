@@ -1,8 +1,22 @@
 const weatherController = require('../../src/controllers/weatherController');
 const weatherService = require('../../src/services/weatherService');
+const config = require('../../src/config/config');
 
 // Mock dependencies
 jest.mock('../../src/services/weatherService');
+jest.mock('../../src/config/config', () => {
+  return {
+    weatherApi: {
+      baseUrl: 'https://api.openweathermap.org/data/2.5',
+      key: 'test-api-key-for-controller-tests',
+      units: 'metric'
+    },
+    cache: {
+      ttl: 300,
+      checkperiod: 60
+    }
+  };
+});
 
 describe('Weather Controller', () => {
   // Clear all mocks before each test

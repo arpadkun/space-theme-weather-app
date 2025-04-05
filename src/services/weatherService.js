@@ -24,15 +24,20 @@ class WeatherService {
     }
     
     try {
+      // Verify API key exists
+      if (!config.weatherApi.key) {
+        throw new Error('Missing API key for weather service');
+      }
+      
       // Log API request params for debugging
       console.log('Weather API request:', {
         url: `${config.weatherApi.baseUrl}/weather`,
         params: {
           q: location,
           units: units,
-          appid: config.weatherApi.key ? '***' : 'undefined' // Log whether API key exists without exposing it
+          appid: '***' // Hide API key in logs
         },
-        apiKeyLength: config.weatherApi.key ? config.weatherApi.key.length : 0
+        apiKeyLength: config.weatherApi.key.length
       });
       
       // Fetch data from API
